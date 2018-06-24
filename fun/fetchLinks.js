@@ -10,8 +10,9 @@ function fetchLinks() {
                 //返回的是字符串,转化为数组
                 const result = eval(res.text)[0];
                 const proxys = [];
-                result.splice(0, 1);
-
+                if (result.length > 1) {
+                    result.splice(0, 1);
+                }
                 for (let i = 0; i < result.length; i++) {
                     let speed = result[i].speed.substring(0, result[i].speed.length - 1);
                     let connection = result[i].connection.substring(0, result[i].connection.length - 1);
