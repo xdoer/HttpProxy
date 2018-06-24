@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name=”renderer” content=”webkit”>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>IP代理</title>
+    <style>
+        #app {
+            width: 50%;
+            margin: 0 auto;
+        }
+        
+        #configPanel table {
+            width: 90%;
+            margin: 0 auto;
+        }
+        
+        #configPanel table tr {
+            height: 50px;
+        }
+        
+        #configPanel table input {
+            width: 90%;
+            height: 30px;
+            outline: none;
+        }
+        
+        #left {
+            width: 15%;
+            position: fixed;
+            left: 0px;
+            top: 0px;
+        }
+        
+        #left .keyword {
+            color: red;
+            font-weight: bold;
+        }
+        
+        #right {
+            width: 15%;
+            position: fixed;
+            right: 0px;
+            top: 0px;
+        }
+        
+        #right .keyword {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="left">
+        <h2>HTTP免费代理</h2>
+        <p>
+            <span class="keyword">作用</span> : <br> 使用CSDN与百度云等疆内访问不了的国内网站
+        </p>
+        <p>
+            <span class="keyword">说明</span>: <br>当你打开页面时，会看到"查询结果"面板有一些IP地址与端口，这些地址是我从
+            <a href="http://www.xicidaili.com/" target="_blank">西刺代理</a>网站上使用
+            <a href="http://splider.docmobile.cn" target="_blank">WebSplider</a>爬虫爬下来的。 由于是免费的代理， 不能保证代理是否能用，于是我做了这个项目，帮助大家筛选可用的代理。
+        </p>
+        <p>
+            <span class="keyword">与翻墙的区别</span>:<br>使用这里的HTTP代理，你不能访问到Google，Youtube等境外网站。只能访问国内网站。且不使用VPN，SSR等软件，仅需浏览器即可代理
+        </p>
+    </div>
+    <div id="right">
+        <p>
+            <span class="keyword">使用说明</span>:
+            <br>配置面板中，默认选取了百度首页，测试代理是否可用，延时时间默认1000毫秒。这里测试网站你可以随便输入，测试时间最好保持默认或者2秒及以上。
+        </p>
+        <p>
+            <span class="keyword">注意</span>:
+            <ol>
+                <li>
+                    配置测试时间越久，得到的可用地址越多
+                </li>
+                <li>
+                    IP地址池中地址每20分钟更新一次。
+                </li>
+                <li>
+                    如果当前结果没有可用的代理，可以尝试将测试时间延长至2秒或者等20分钟后再试
+                </li>
+            </ol>
+        </p>
+    </div>
+    <div id="app">
+        <fieldset id="configPanel">
+            <legend>配置面板</legend>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>测试网址</td>
+                        <td>
+                            <input type="text" v-model="testLink" placeholder="注意不要输入https请求头网址">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>测试时间</td>
+                        <td>
+                            <select name="testTime" id="testTime" v-model="testTime">
+                                <option>500</option>
+                                <option>1000</option>
+                                <option>2000</option>
+                            </select> 毫秒
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: center">
+                            <button @click="reqResult">测试</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><a href="https://github.com/LuckyHH/http-proxy" target="_blank">项目地址</a> <a href="">问题反馈</a></p>
+        </fieldset>
+        <fieldset id="showPanel">
+            <legend>{{showTitle}}</legend>
+            <div id="show" v-text="show"></div>
+        </fieldset>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@0.18.0/dist/axios.min.js"></script>
+    <script>
+        const main = new Vue({
+            el: "#app",
+            data: {
+                testLink: "http://pv.sohu.com/cityjson",
+                testTime: "1000",
+                show: "",
+                showTitle: "所有地址",
+                flag: true //按钮锁
+            },
+            methods: {
+                reqResult() {
+                    const that = this;
+                    if (that.flag) {
+                        that.flag = false;
+                        that.show = "数据请求中，请稍等...";
+                        that.showTitle = "查询结果";
+                        axios.get("/fetchanswer", {
+                            params: {
+                                testLink: that.testLink,
+                                testTime: that.testTime
+                            }
+                        }).then(res => {
+                            that.show = res.data;
+                        }).catch(err => {
+                            that.show = err;
+                        })
+                    } else {
+                        that.show = "数据请求中，请耐心等待..."
+                    }
+                },
+                getdata() {
+                    const that = this;
+                    axios.get("/getdata")
+                        .then(res => {
+                            that.show = res.data;
+                        }).catch(err => {
+                            that.show = err;
+                        }).then(() => {
+                            that.flag = true;
+                        })
+                }
+            }
+        })
+        window.onload = function() {
+            main.getdata();
+        }
+    </script>
+</body>
+
+</html>
