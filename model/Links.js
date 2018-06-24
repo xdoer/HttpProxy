@@ -1,5 +1,5 @@
 const monk = require("monk");
-const url = "localhost:27017/findip"
+const url = "127.0.0.1:27017/httpproxy"
 const db = monk(url);
 const collection = db.get('findip');
 

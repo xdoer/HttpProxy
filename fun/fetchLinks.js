@@ -3,7 +3,7 @@ const Links = require("../model/Links");
 
 function fetchLinks() {
     return new Promise((resolve, reject) => {
-        superagent.get("http://splider.docmobile.cn/interface?name=luckyhh&cid=1529772084829").end((err, res) => {
+        superagent.get("http://splider.docmobile.cn/interface?name=luckyhh&cid=1529834826055").end((err, res) => {
             if (err) {
                 reject(err);
             } else {

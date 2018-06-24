@@ -49,6 +49,14 @@ app.use(async function(ctx, next) {
     }
 })
 
+app.use(async function(ctx, next) {
+    if (ctx.request.path === "/httptest" && ctx.request.method === "GET") {
+        ctx.response.body = 1;
+    } else {
+        await next();
+    }
+})
+
 app.listen(process.env.PORT || 3004, () => {
     console.log("服务已开启");
 });

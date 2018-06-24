@@ -72,7 +72,7 @@
     <div id="right">
         <p>
             <span class="keyword">使用说明</span>:
-            <br>配置面板中，默认选取了百度首页，测试代理是否可用，延时时间默认1000毫秒。这里测试网站你可以随便输入，测试时间最好保持默认或者2秒及以上。
+            <br>配置面板中，选择"测试时间",点击"测试"即可。测试时间是指服务器响应请求的最大延时时间，超过延时时间，就被pass了，所以设置的延时时间越长，获得的链接将越多。
         </p>
         <p>
             <span class="keyword">注意</span>:
@@ -97,7 +97,7 @@
                     <tr>
                         <td>测试网址</td>
                         <td>
-                            <input type="text" v-model="testLink" placeholder="注意不要输入https请求头网址">
+                            <input type="text" v-model="testLink" placeholder="注意不要输入https请求头网址" readonly>
                         </td>
                     </tr>
                     <tr>
@@ -130,7 +130,7 @@
         const main = new Vue({
             el: "#app",
             data: {
-                testLink: "http://pv.sohu.com/cityjson",
+                testLink: "http://httpproxy.docmobile.cn/httptest",
                 testTime: "1000",
                 show: "",
                 showTitle: "所有地址",

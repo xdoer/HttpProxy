@@ -38,15 +38,14 @@ function check(obj) {
             let proxy = proxys[i];
             request({
                 url: obj.testLink,
-                proxy: `${proxy.type.toLowerCase()}://${proxy.ip}:${proxy.port}`,
+                proxy: `${proxy.type?proxy.type.toLowerCase():'http'}://${proxy.ip}:${proxy.port}`,
                 method: 'GET',
                 timeout: obj.testTime,
                 headers: {
                     'User-Agent': UserAgent[Math.floor(Math.random() * UserAgent.length + 1) - 1]
                 }
             }, function(error, response, body) {
-                console.log("查看response", response)
-                if (!error && response.statusCode == 200) {
+                if (!error && response.statusCode == 200 && body == 1) {
                     useful.push(response.request['proxy']['href']);
                 }
                 flag--;
