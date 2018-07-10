@@ -15,7 +15,7 @@
         
         #configPanel table {
             width: 90%;
-            margin: 0 auto;
+            margin: 30px auto;
         }
         
         #configPanel table tr {
@@ -72,16 +72,16 @@
     <div id="right">
         <p>
             <span class="keyword">使用说明</span>:
-            <br>配置面板中，选择"测试时间",点击"测试"即可。测试时间是指服务器响应请求的最大延时时间，超过延时时间，就被pass了，所以设置的延时时间越长，获得的链接将越多。
+            <br>配置面板中，选择"响应时间",点击"测试"即可。响应时间是指目标服务器在设置代理之后响应我的服务器请求的最大时间，超过响应时间，就被pass了，所以设置的响应时间越长，获得的链接将越多。
         </p>
         <p>
             <span class="keyword">注意</span>:
             <ol>
                 <li>
-                    配置测试时间越久，得到的可用地址越多
+                    配置响应时间越久，得到的可用地址越多
                 </li>
                 <li>
-                    IP地址池中地址每20分钟更新一次。
+                    IP地址池中地址随WebSplider数据结果每天更新一次。
                 </li>
                 <li>
                     如果当前结果没有可用的代理，可以尝试将测试时间延长至2秒或者等20分钟后再试
@@ -95,18 +95,13 @@
             <table>
                 <tbody>
                     <tr>
-                        <td>测试网址</td>
-                        <td>
-                            <input type="text" v-model="testLink" placeholder="注意不要输入https请求头网址" readonly>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>测试时间</td>
+                        <td>响应时间</td>
                         <td>
                             <select name="testTime" id="testTime" v-model="testTime">
                                 <option>500</option>
                                 <option>1000</option>
                                 <option>2000</option>
+                                <option>5000</option>
                             </select> 毫秒
                         </td>
                     </tr>
@@ -117,7 +112,8 @@
                     </tr>
                 </tbody>
             </table>
-            <p><a href="https://github.com/LuckyHH/http-proxy" target="_blank">项目地址</a> <a href="">问题反馈</a></p>
+            <p><a href="https://github.com/LuckyHH/http-proxy" target="_blank">项目地址</a> <a href="https://github.com/LuckyHH/HttpProxy/issues/1" target="_blank">问题反馈</a> <a href="http://splider.docmobile.cn" target="_blank">WebSplider爬虫</a> <a href="https://docmobile.cn"
+                    target="_blank">文享日志</a></p>
         </fieldset>
         <fieldset id="showPanel">
             <legend>{{showTitle}}</legend>
@@ -130,7 +126,6 @@
         const main = new Vue({
             el: "#app",
             data: {
-                testLink: "http://httpproxy.docmobile.cn/httptest",
                 testTime: "1000",
                 show: "",
                 showTitle: "所有地址",
@@ -145,13 +140,14 @@
                         that.showTitle = "查询结果";
                         axios.get("/fetchanswer", {
                             params: {
-                                testLink: that.testLink,
                                 testTime: that.testTime
                             }
                         }).then(res => {
                             that.show = res.data;
+                            that.flag = true;
                         }).catch(err => {
                             that.show = err;
+                            that.flag = true;
                         })
                     } else {
                         that.show = "数据请求中，请耐心等待..."
@@ -161,6 +157,7 @@
                     const that = this;
                     axios.get("/getdata")
                         .then(res => {
+                            console.log(res);
                             that.show = res.data;
                         }).catch(err => {
                             that.show = err;

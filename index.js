@@ -1,14 +1,8 @@
 const koa = require("koa");
 const tofindippool = require("./fun/toFindIpPool");
-const Links = require("./model/Links");
-const auto = require("./fun/autoUpdate");
-const toupdate = require("./fun/toupdate")
+const axios = require("axios");
 const fs = require("fs");
 const app = new koa();
-
-//定时任务启动
-//每20分钟更新数据库
-auto();
 
 app.use(async function(ctx, next) {
     if (ctx.request.path === "/" && ctx.request.method === "GET") {
@@ -25,24 +19,38 @@ app.use(async function(ctx, next) {
 
 app.use(async function(ctx, next) {
     if (ctx.request.path === "/getdata" && ctx.request.method === "GET") {
-        const result = await Links.get({});
-        if (result.length < 1) {
-            ctx.response.body = toupdate(result);
-        } else {
-            ctx.response.body = result[0].data;
-        }
+        ctx.response.body = await gg();
     } else {
         await next();
     }
 })
 
+async function gg() {
+    //保存请求爬虫的数据
+    let result = null;
+    return result || await (() => {
+        return new Promise((resolve, reject) => {
+            axios.get("http://splider.docmobile.cn/interface?name=luckyhh&cid=1529918820125").then(res => {
+                result = res.data;
+                resolve(result);
+            }).catch(err => {
+                reject(err);
+            })
+        })
+    })();
+}
 
 app.use(async function(ctx, next) {
     if (ctx.request.path === "/fetchanswer" && ctx.request.method === "GET") {
         const body = ctx.request.query;
+
+        //提供API用。
+        const testTime = body.testTime ? parseInt(body.testTime) : 500;
+        const testIp = await gg();
+
         ctx.response.body = await tofindippool({
-            testLink: body.testLink,
-            testTime: parseInt(body.testTime)
+            testTime,
+            testIp
         });
     } else {
         await next();
