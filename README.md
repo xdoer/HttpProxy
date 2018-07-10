@@ -24,7 +24,17 @@ npm install
 ```
 npm start
 ```
-浏览器打开localhost:3000即可
+浏览器打开localhost:3004即可
+
+### API
+返回有效的代理地址，测试代理默认响应时间500毫秒
+```
+http://localhost:3004/fetchanswer
+```
+或者手动指定测试响应时间
+```
+http://localhost:3004/fetchanswer?testTime=1000
+```
 
 ### 在线实例
 [HttpProxy](http://httpproxy.docmobile.cn/)
