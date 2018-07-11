@@ -1,5 +1,5 @@
 const koa = require("koa");
-const tofindippool = require("./fun/toFindIpPool");
+const tofindippool = require("./lib/toFindIpPool");
 const axios = require("axios");
 const fs = require("fs");
 const app = new koa();
