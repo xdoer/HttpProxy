@@ -4,6 +4,19 @@ const axios = require("axios");
 const fs = require("fs");
 const app = new koa();
 
+async function gg() {
+    return await (() => {
+        return new Promise((resolve, reject) => {
+            axios.get("http://splider.docmobile.cn/interface?name=luckyhh&cid=1531644002408").then(res => {
+                result = res.data;
+                resolve(result);
+            }).catch(err => {
+                reject(err);
+            })
+        })
+    })();
+}
+
 app.use(async function(ctx, next) {
     if (ctx.request.path === "/" && ctx.request.method === "GET") {
         ctx.response.type = "html";
@@ -24,21 +37,6 @@ app.use(async function(ctx, next) {
         await next();
     }
 })
-
-async function gg() {
-    //保存请求爬虫的数据
-    let result = null;
-    return result || await (() => {
-        return new Promise((resolve, reject) => {
-            axios.get("http://splider.docmobile.cn/interface?name=luckyhh&cid=1529918820125").then(res => {
-                result = res.data;
-                resolve(result);
-            }).catch(err => {
-                reject(err);
-            })
-        })
-    })();
-}
 
 app.use(async function(ctx, next) {
     if (ctx.request.path === "/fetchanswer" && ctx.request.method === "GET") {
