@@ -13,18 +13,10 @@
 下载本项目
 ```
 git clone https://github.com/LuckyHH/HttpProxy
-```
-
-进入项目目录，安装依赖
-```
 npm install
-```
-
-运行项目
-```
 npm start
 ```
-浏览器打开localhost:3004即可
+浏览器打开localhost:3000即可
 
 ### API
 返回有效的代理地址，测试代理默认响应时间500毫秒
