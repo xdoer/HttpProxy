@@ -8,8 +8,7 @@ async function gg() {
     return await (() => {
         return new Promise((resolve, reject) => {
             axios.get("http://splider.docmobile.cn/interface?name=luckyhh&cid=1531644002408").then(res => {
-                result = res.data;
-                resolve(result);
+                resolve(res.data);
             }).catch(err => {
                 reject(err);
             })
@@ -46,10 +45,19 @@ app.use(async function(ctx, next) {
         const testTime = body.testTime ? parseInt(body.testTime) : 500;
         const testIp = await gg();
 
-        ctx.response.body = await tofindippool({
-            testTime,
-            testIp
-        });
+        if (testIp.state) {
+            ctx.response.body = await tofindippool({
+                testTime,
+                testIp: testIp.data
+            })
+        } else {
+            ctx.response.body = {
+                state: false,
+                time: new Date(),
+                data: "爬虫API响应失败"
+            };
+        }
+
     } else {
         await next();
     }

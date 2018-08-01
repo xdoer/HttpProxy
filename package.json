@@ -9,8 +9,11 @@
     "author": "luckyhh",
     "license": "MIT",
     "dependencies": {
+        "any-promise": "^1.3.0",
         "async": "^2.6.1",
         "axios": "^0.18.0",
+        "bluebird": "^3.5.1",
+        "cheerio": "^1.0.0-rc.2",
         "koa": "^2.5.1",
         "request": "^2.87.0"
     }
