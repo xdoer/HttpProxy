@@ -21,7 +21,7 @@ app.use(async function(ctx, next) {
         ctx.response.type = "html";
         ctx.response.body = await fs.ReadStream("./index.html", (err) => {
             if (err) {
-                console.log(err);
+                console.error(err);
             }
         });
     } else {
