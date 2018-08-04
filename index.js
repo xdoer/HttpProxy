@@ -7,7 +7,7 @@ const app = new koa();
 async function gg() {
     return await (() => {
         return new Promise((resolve, reject) => {
-            axios.get("http://splider.docmobile.cn/interface?name=luckyhh&cid=1531644002408").then(res => {
+            axios.get("https://websplider.herokuapp.com/interface?name=luckyhh&cid=1533407375426").then(res => {
                 resolve(res.data);
             }).catch(err => {
                 reject(err);
