@@ -1,13 +1,14 @@
 const koa = require("koa");
 const tofindippool = require("./lib/toFindIpPool");
 const axios = require("axios");
+const proxySrc = require("./config.json").proxySrc;
 const fs = require("fs");
 const app = new koa();
 
-async function gg() {
+async function getProxys(url) {
     return await (() => {
         return new Promise((resolve, reject) => {
-            axios.get("https://websplider.herokuapp.com/interface?name=luckyhh&cid=1533407375426").then(res => {
+            axios.get(url).then(res => {
                 resolve(res.data);
             }).catch(err => {
                 reject(err);
@@ -31,7 +32,8 @@ app.use(async function(ctx, next) {
 
 app.use(async function(ctx, next) {
     if (ctx.request.path === "/getdata" && ctx.request.method === "GET") {
-        ctx.response.body = await gg();
+        const body = ctx.request.query;
+        ctx.response.body = await getProxys(parseInt(body.testSrc) == 1 ? proxySrc[0] : proxySrc[1]);
     } else {
         await next();
     }
@@ -43,7 +45,8 @@ app.use(async function(ctx, next) {
 
         //提供API用。
         const testTime = body.testTime ? parseInt(body.testTime) : 500;
-        const testIp = await gg();
+        const proxy = body.testSrc ? parseInt(body.testSrc) == 1 ? proxySrc[0] : proxySrc[1] : proxySrc[0];
+        const testIp = await getProxys(proxy);
 
         if (testIp.state) {
             ctx.response.body = await tofindippool({
