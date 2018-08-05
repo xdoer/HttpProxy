@@ -7,6 +7,7 @@
 ### 特性
 > * 简单高效
 > * 结果准确
+> * 两种数据源([西刺代理](http://www.xicidaili.com/)与[FreeProxyList](https://free-proxy-list.net/))
 
 
 ### 本地测试
@@ -36,13 +37,17 @@ http://localhost:3000/fetchanswer?testTime=1000&testSrc=1
 testSrc参数为1，为西刺代理，参数为2，为国外代理
 
 ### 在线实例
-[HttpProxy](http://httpproxy.docmobile.cn/)
+```
+http://httpproxy.docmobile.cn
+```
 
-### HttpProxy镜像
+### 实例镜像
 ```
 https://httpproxys.herokuapp.com
 ```
 该镜像使用的是国外的代理源，由同样部署在Heroku上的[WebSplider](https://websplider.herokuapp.com)提供API支持
+
+镜像API支持https
 
 ### 其他
 配合[WebSplider](http://splider.docmobile.cn/)在线爬虫，修改数据源。定制自己的IP代理池
@@ -51,7 +56,6 @@ https://httpproxys.herokuapp.com
 自己在使用WebSplider抓取数据，定制数据源时，每个数据中必须有ip和port两个值。
 
 例如:
-
 ```
 {
     "ip":"123.234.345.456",
