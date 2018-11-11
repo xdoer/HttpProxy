@@ -74,6 +74,6 @@ app.use(async function(ctx, next) {
     }
 })
 
-app.listen(process.env.PORT || 3000, () => {
+app.listen(process.env.PORT || 3001, () => {
     console.log("服务已开启");
 });
