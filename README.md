@@ -7,8 +7,12 @@
 ### 特性
 > * 简单高效
 > * 结果准确
-> * 两种数据源([西刺代理](http://www.xicidaili.com/)与[FreeProxyList](https://free-proxy-list.net/))
 
+
+### 数据源
+[FreeProxyList](https://free-proxy-list.net/)
+
+删除了原有的[西刺代理](http://www.xicidaili.com)，一是Heroku访问不到西刺代理，二是西刺代理质量差。所以目前HttpProxy面板上的两种数据源都为[FreeProxyList](https://free-proxy-list.net/)，需要自己添加数据源的，可以修改config.json文件
 
 ### 本地测试
 下载本项目
@@ -38,19 +42,11 @@ testSrc参数为1，为西刺代理，参数为2，为国外代理
 
 ### 在线实例
 ```
-http://httpproxy.docmobile.cn
+https://proxys.herokuapp.com
 ```
-
-### 实例镜像
-```
-https://httpproxys.herokuapp.com
-```
-该镜像使用的是国外的代理源，由同样部署在Heroku上的[WebSplider](https://websplider.herokuapp.com)提供API支持
-
-镜像API支持https
 
 ### 其他
-配合[WebSplider](http://splider.docmobile.cn/)在线爬虫，修改数据源。定制自己的IP代理池
+配合[WebSplider](https://splider.herokuapp.com/)在线爬虫，修改数据源。定制自己的IP代理池
 
 注:
 自己在使用WebSplider抓取数据，定制数据源时，每个数据中必须有ip和port两个值。
