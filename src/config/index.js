@@ -15,6 +15,7 @@ const UserAgent = [
 ]
 
 module.exports = {
+  PORT:3000,
   CRAWL: {
     DELAY: 0,
     CONCURRENT: 1,

@@ -3,6 +3,7 @@ const { createServer } = require('http')
 const checkProxies = require('./proxy/checkProxies')
 const proxyController = require('./proxy/proxyController')
 const isNaN = require('./utils/isNaN')
+const { PORT } = require('./config')
 const app = createServer(router)
 const io = require('socket.io')(app)
 
@@ -19,7 +20,7 @@ io.on('connection', async function (socket) {
   })
 })
 
-app.listen(80, err => {
+app.listen(process.env.PORT || PORT, err => {
   if (err) {
     console.log(err)
   } else {
