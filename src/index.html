@@ -4,19 +4,143 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
+  <title>HttpProxy</title>
+  <style>
+    html,body{
+      margin:0px;
+      padding:0px;
+    }
+    #app{
+      width: 80%;
+      margin: 10px auto 0;
+    }
+    #app p{
+      text-align: center;
+    }
+    .highLight{
+      color: red;
+    }
+    .config-panel table{
+      table-layout: fixed;
+      margin: 30px auto;
+    }
+    .config-panel table tr td{
+      padding: 10px;
+      line-height: 28px;
+    }
+    .config-panel .check{
+      display: inline-block;
+      width: 50%;
+      height: 100%;
+      margin-left: 25%; 
+      text-align:center;
+
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      border-radius: 5px;
+      text-decoration: none;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .result-panel table{
+      table-layout: fixed;
+      width: 100%;
+    }
+  </style>
 </head>
 <body>
-  辣辣la
+  <div id="app">
+    <fieldset class="config-panel">
+      <legend>配置面板</legend>
+      <table>
+        <tr>
+          <td>代理源</td>
+          <td>
+            <select name="mode" class="mode" id="mode">
+              <option value="xici">西刺代理</option>
+              <option value="freeproxylist">FreeProxyList</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>超时值</td>
+          <td>
+            <select name="timeout" class="timeout" id="timeout">
+              <option value="500">500</option>
+              <option value="1000" selected>1000</option>
+              <option value="2000">2000</option>
+              <option value="5000">5000</option>
+            </select>            
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <span class="check">检测</span>
+          </td>
+        </tr>
+      </table>
+      <p><a href="https://localhost/api" target="_blank">API</a> <a href="https://github.com/LuckyHH/HttpProxy" target="_blank" rel="noopener noreferrer">项目地址</a> <a href="https://spider.docmobile.cn" target="_blank" rel="noopener noreferrer">WebSpider</a> <a href="https://www.docmobile.cn" target="_blank" rel="noopener noreferrer">文享日志</a></p>
+    </fieldset>
+
+    <fieldset class="result-panel">
+      <legend>检测结果</legend>
+        <p class="tips">正在连接中...</p>
+        <table>
+          <thead>
+            <tr>
+              <td>来源</td>
+              <td>代理</td>
+              <td>状态</td>
+              <td>检测时间</td>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+        <p class="prompt"></p>
+    </fieldset>
+  </div>
   <script src="/socket.io/socket.io.js"></script>
   <script>
-    var socket = io('http://localhost');
-    socket.on('news', function (data) {
-      console.log(data);
-      socket.emit('my other event', { my: 'data' })
+
+    const tbody = document.querySelector('.result-panel table tbody')
+
+    const render = ({ name, time, status, proxy, msg }) => {
+      const template = `
+        <td>${name}</td>
+        <td>${proxy}</td>
+        <td class=${status === 200 ? 'highLight': ''}>${status === 200 ? '成功' : status}</td>
+        <td>${time}</td> 
+      `
+      const tr = document.createElement('tr')
+      tr.innerHTML = template
+      tbody.append(tr)
+    }
+
+    const socket = io('http://localhost')
+    socket.on('news', data => {
+      const tips = document.querySelector('.tips')
+      tips.innerText = data.data
     })
-    socket.on('proxy', data => {
-      console.log(data)
+    socket.on('proxies', data => {
+      render(data)
+    })
+    socket.on('checkDown', res => {
+      document.querySelector('.prompt').innerText = '代理检测完毕'
+    })
+
+
+    const btn = document.querySelector('.check')
+    btn.addEventListener('click', () => {
+      const mode = document.querySelector('.mode')
+      const timeout = document.querySelector('.timeout')
+      tbody.innerHTML = ''
+      document.querySelector('.prompt').innerText = ''
+      socket.emit('proxy', {
+        mode: mode.value || 'xici',
+        timeout: timeout.value || 1000
+      })
     })
   </script>
 </body>
