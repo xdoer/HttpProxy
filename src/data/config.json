@@ -1,0 +1,20 @@
+{
+  "XiCi": {
+    "urls": ["http://www.xicidaili.com/nn/1"],
+    "tags": ["$(\"#ip_list tr\").not($(\"#ip_list tr\").eq(0))"],
+    "form": {
+      "ip": "$element.children('td').eq(1).text()",
+      "port": "$element.children('td').eq(2).text()"
+    },
+    "depth": 1
+  },
+  "FreeProxyList": {
+    "urls": ["https://free-proxy-list.net/"],
+      "tags": ["$(\"#proxylisttable tr\").not($(\"#proxylisttable tr\").eq(0)).not($(\"proxylisttable tr\").eq($(\"#proxylisttable tr\").length-1))"],
+      "form": {
+        "ip": "$element.children('td').eq(0).text()",
+        "port": "$element.children('td').eq(1).text()"
+      },
+    "depth": 1
+  }
+}
