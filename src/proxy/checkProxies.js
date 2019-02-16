@@ -26,20 +26,22 @@ module.exports = async ({name, socket, t, proxies}) => {
         }
         
         if (name) {
-          socket.emit('proxy', {
+          socket.emit('proxies', {
             time: time(),
             name: name,
             status: res ? res.status : err.code,
             proxy: _proxy,
-            text: res ? res.text : err.code === 'ECONNABORTED' ? '超时' : err,
-            msg: res ? '筛选成功' : '请调整超时值' 
-          })          
+            text: res ? res.text : err,
+          })
         }
       })
     }, (err, res) => {
       if (err) {
         console.log(err)
         reject(err)
+      }
+      if (name) {
+        socket.emit('checkDown')
       }
       resolve([...new Set(res)].filter(n => n !== '' || !isInvalidUrl(n)))
     })
