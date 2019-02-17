@@ -24,7 +24,7 @@ module.exports = {
     }
   },
   DB: {
-    URL: 'localhost:27017/proxy'
+    URL: 'luckyhh:test123456@ds237955.mlab.com:37955/httpproxy'
   },
   PROXY: {
     // 代理更新间隔，单位小时
