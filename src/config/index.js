@@ -17,7 +17,7 @@ const UserAgent = [
 module.exports = {
   PORT:3000,
   CRAWL: {
-    DELAY: 0,
+    DELAY: 30,
     CONCURRENT: 1,
     HEADER:{
       'User-Agent': UserAgent[Math.floor(Math.random() * UserAgent.length + 1) - 1]
