@@ -103,7 +103,7 @@
   </div>
   <script src="/socket.io/socket.io.js"></script>
   <script>
-
+    let lock = false
     const tbody = document.querySelector('.result-panel table tbody')
 
     const render = ({ name, time, status, proxy, msg }) => {
@@ -127,20 +127,26 @@
       render(data)
     })
     socket.on('checkDown', res => {
+      lock = false
       document.querySelector('.prompt').innerText = '代理检测完毕'
     })
 
 
     const btn = document.querySelector('.check')
     btn.addEventListener('click', () => {
-      const mode = document.querySelector('.mode')
-      const timeout = document.querySelector('.timeout')
-      tbody.innerHTML = ''
-      document.querySelector('.prompt').innerText = ''
-      socket.emit('proxy', {
-        mode: mode.value || 'xici',
-        timeout: timeout.value || 1000
-      })
+      if (!lock) {
+        lock = true
+        const mode = document.querySelector('.mode')
+        const timeout = document.querySelector('.timeout')
+        tbody.innerHTML = ''
+        document.querySelector('.prompt').innerText = ''
+        socket.emit('proxy', {
+          mode: mode.value || 'xici',
+          timeout: timeout.value || 1000
+        })        
+      } else {
+        alert('请等待当前检测完毕')
+      }
     })
   </script>
 </body>
