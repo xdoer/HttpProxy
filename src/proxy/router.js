@@ -38,7 +38,7 @@ module.exports = async (req, res) => {
           param.s = 1
         } else {
           const s = Number.parseInt(_param.s)
-          param.s = s > 2 || s < 1 ? s === 1 : s
+          param.s = s > 2 || s < 1 ? 1 : s
         }
       } else {
         param.s = 1
