@@ -40,9 +40,6 @@ module.exports = async ({name, socket, t, proxies}) => {
         console.log(err)
         reject(err)
       }
-      if (name) {
-        socket.emit('checkDown')
-      }
       resolve([...new Set(res)].filter(n => n !== '' || !isInvalidUrl(n)))
     })
   })
