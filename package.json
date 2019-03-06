@@ -16,5 +16,8 @@
     "superagent": "^4.0.0",
     "superagent-charset": "^1.2.0",
     "superagent-proxy": "^2.0.0"
+  },
+  "engines": {
+    "node": ">=8.0.0"
   }
 }
