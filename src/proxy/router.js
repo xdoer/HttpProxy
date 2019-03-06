@@ -24,11 +24,15 @@ module.exports = async (req, res) => {
     if (/\/api\?/i.test(req.url)) {
       const params = req.url.slice(req.url.indexOf("?") + 1).split("&").map(n => n.split('='))
       const _param = new Map(params)
+      const allNumber = [500, 1000, 2000, 5000]
       if (_param.get('t')) {
         if(_isNaN(_param.get('t'))) {
           param.t = 1000
         } else {
-          param.t = Number.parseInt(_param.t)
+          const paramNumber = Number.parseInt(_param.t)
+          if (allNumber.indexOf(paramNumber) !== -1) {
+            param.t = paramNumber
+          }
         }
       } else {
         param.t = 1000
