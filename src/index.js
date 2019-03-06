@@ -14,9 +14,11 @@ io.on('connection', async function (socket) {
     msg: '成功'
   })
   socket.on('proxy', async data => {
-    const { mode = 'xici' , timeout = 1000 } = data
-    const t = isNaN(timeout) ? 1000 : Number.parseInt(timeout)
-    checkProxies({ socket, t, ...await proxyController(mode === 'xici' ? 1 : 2)})
+    let { mode = 'xici' , timeout = 1000 } = data
+    timeout = Number.parseInt(timeout)
+    const t = isNaN(timeout) ? 1000 : [500, 1000, 2000, 5000].indexOf(timeout) === -1 ? 1000 : timeout 
+    await checkProxies({ socket, t, ...await proxyController(mode === 'xici' ? 1 : 2)})
+    socket.emit('checkDown')
   })
 })
 
