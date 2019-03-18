@@ -118,7 +118,7 @@
       tbody.append(tr)
     }
 
-    const socket = io('https://proxys.herokuapp.com')
+    const socket = io('http://localhost:3000')
     socket.on('news', data => {
       const tips = document.querySelector('.tips')
       tips.innerText = data.data
