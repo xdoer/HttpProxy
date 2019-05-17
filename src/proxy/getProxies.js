@@ -1,10 +1,10 @@
 const crawl = require('../crawl')
-const { XiCi, FreeProxyList } = require('../data/config.json')
+const Config = require('../data/config.json')
 
 module.exports = async src => {
   return await new Promise((resolve, reject) => {
     try {
-      resolve(src === 1 ? crawl(XiCi) : crawl(FreeProxyList))
+      resolve(crawl(Config[src] || Config['xici']))
     } catch (e) {
       reject(e)
     }

@@ -2,6 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const checkProxies = require('./checkProxies')
 const proxyController = require('./proxyController')
+const Config = require('../data/config')
 const _isNaN = require('../utils/isNaN')
 
 module.exports = async (req, res) => {
@@ -18,6 +19,7 @@ module.exports = async (req, res) => {
 
   /** 示例地址:/api?t=1000&src=1 */
   if (req.method === 'GET' && /\/api\??/i.test(req.url)) {
+    const keys = Object.keys(Config)
     let param = {}
 
     // 构造参数
@@ -29,27 +31,24 @@ module.exports = async (req, res) => {
         if(_isNaN(_param.get('t'))) {
           param.t = 1000
         } else {
-          const paramNumber = Number.parseInt(_param.t)
+          const paramNumber = Number.parseInt(_param.get('t'))
           if (allNumber.indexOf(paramNumber) !== -1) {
             param.t = paramNumber
+          } else {
+            param.t = 1000
           }
         }
       } else {
         param.t = 1000
       }
       if (_param.get('s')) {
-        if (_isNaN(_param.get('s'))) {
-          param.s = 1
-        } else {
-          const s = Number.parseInt(_param.s)
-          param.s = s > 2 || s < 1 ? 1 : s
-        }
+        param.s = keys.indexOf(_param.get('s')) === -1 ? 'xici' : _param.get('s')
       } else {
-        param.s = 1
+        param.s = 'xici'
       }
     } else {
       param.t = 1000,
-      param.s = 1
+      param.s = 'xici'
     }
     const { name, time, proxies } = await proxyController(param.s)
     res.writeHead(200, { 'Content-Type': 'application/json', 'Content-Encoding': 'utf-8' })

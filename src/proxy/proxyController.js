@@ -5,13 +5,13 @@ const { PROXY: { INTERVAL } } = require('../config')
 /**
  * 代理控制器
  * 控制检测的代理来自爬虫抓取的还是数据库中的
- * @param { Number } src 1 || 2 代表代理来源
- */
+ * @param { String } src
+ */ 
 module.exports = async src => {
-  const config = await Proxy.get()
+  const config = await Proxy.get({name: src})
   if (config.state) {
-    const { xici, freeproxylist } = config.data[0].proxies
-    const t = src === 1 ? xici.time : freeproxylist.time
+    const target = config.data[0]
+    const t = target.time
     if ((Date.now() - Number.parseInt(t)) / (3600 * 1000) > INTERVAL ) {
       const proxies = await getProxies(src)
       const update = await Proxy.update(
@@ -19,51 +19,39 @@ module.exports = async src => {
           id: config.data[0].id 
         },
         {
-          proxies: {
-            xici: {
-              time: src === 1 ? '' + Date.now() : xici.time,
-              proxies: src === 1 ? proxies.state ? proxies.data : xici.proxies : xici.proxies
-            },
-            freeproxylist: {
-              time: src === 2 ? '' + Date.now() : freeproxylist.time,
-              proxies: src === 2 ? proxies.state ? proxies.data : freeproxylist.proxies : freeproxylist.proxies
-            }
+          time: '' + Date.now(),
+          proxies: proxies.state ? [...new Set(proxies.data)].filter(n => n.ip && n.port) : [],
         }
-      })
+      )
       if (!update.state) {
         console.log('更新失败')
+        return
       }
       return {
-        name: src === 1 ? '西刺代理' : 'FreeProxyList',
-        proxies: proxies.state ? proxies.data : [],
+        name: src,
+        proxies: proxies.state ? [...new Set(proxies.data)].filter(n => n.ip && n.port) : [],
         time: '' + Date.now()
       }
     } else {
       return {
-        name: src === 1 ? '西刺代理' : 'FreeProxyList',  
-        ...src === 1 ? xici : freeproxylist
+        name: src,  
+        proxies: [...new Set(target.proxies)].filter(n => n.ip && n.port),
+        time: '' + Date.now()
       }
     }
   } else {
     const proxies = await getProxies(src)
     const save = await new Proxy({
-      proxies: {
-        xici: {
-          time: '' + Date.now(),
-          proxies: src === 1 ? proxies.state ? proxies.data : [] : []
-        },
-        freeproxylist: {
-          time: '' + Date.now(),
-          proxies: src === 2 ? proxies.state ? proxies.data : [] : []
-        }
-      }
+      name: src,
+      time: '' + Date.now(),
+      proxies: proxies.state ? [...new Set(proxies.data)].filter(n => n.ip && n.port ) : [],
     }).save()
     if (!save.state) {
       console.log('保存失败')
     }
     return {
-      name: src === 1 ? '西刺代理' : 'FreeProxyList',
-      proxies: proxies.state ? proxies.data : [],
+      name: src,
+      proxies: proxies.state ? [...new Set(proxies.data)].filter(n => n.ip && n.port) : [],
       time: '' + Date.now()
     }
   }

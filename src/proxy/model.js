@@ -4,13 +4,17 @@ const db = monk(url)
 const collection = db.get('crawl')
 
 class Proxy {
-  constructor ({ proxies}) {
+  constructor ({ name, time, proxies }) {
     this.id = '' + Date.now()
+    this.name = name
+    this.time = time
     this.proxies = proxies
   }
   save () {
     return collection.insert({
       id: this.id,
+      name: this.name,
+      time: this.time,
       proxies: this.proxies
     })
     .then(docs => ({

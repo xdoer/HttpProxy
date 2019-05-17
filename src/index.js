@@ -17,7 +17,7 @@ io.on('connection', async function (socket) {
     let { mode = 'xici' , timeout = 1000 } = data
     timeout = Number.parseInt(timeout)
     const t = isNaN(timeout) ? 1000 : [500, 1000, 2000, 5000].indexOf(timeout) === -1 ? 1000 : timeout 
-    await checkProxies({ socket, t, ...await proxyController(mode === 'xici' ? 1 : 2)})
+    await checkProxies({ socket, t, ...await proxyController(mode)})
     socket.emit('checkDown')
   })
 })
