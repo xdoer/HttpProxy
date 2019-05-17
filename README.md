@@ -11,6 +11,14 @@
 
 [西刺代理](http://www.xicidaili.com)
 
+[神鸡代理](https://www.kuaidaili.com/free/)
+
+[快代理](https://www.kuaidaili.com/free/)
+
+[89免费代理](http://www.89ip.cn/)
+
+[云代理](http://www.ip3366.net/)
+
 ### 检测原理
 将代理配置到请求中，检查返回结果是否与预期结果一致
 
@@ -47,11 +55,11 @@ http://localhost:3000/api?t=1000
 
 指定响应数据源
 ```
-http://localhost:3000/api?t=1000&s=1
+http://localhost:3000/api?t=5000&s=chick
 ```
 
 t参数为超时值，数值越小，检测到的代理质量越好，代理越少。数值越大，检测到的代理质量越差，代理越多
-s参数为1，为西刺代理，参数为2，为国外代理
+s参数为xici、freeproxylist、quick、 chick、 _89ip、 _3366ip
 
 ### 在线实例
 ```
