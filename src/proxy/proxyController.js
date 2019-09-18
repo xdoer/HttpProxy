@@ -47,7 +47,7 @@ module.exports = async src => {
       proxies: proxies.state ? [...new Set(proxies.data)].filter(n => n.ip && n.port ) : [],
     }).save()
     if (!save.state) {
-      console.log('保存失败')
+      console.log('保存失败,错误详情:', save.data)
     }
     return {
       name: src,
