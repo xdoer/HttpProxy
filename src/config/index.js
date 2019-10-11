@@ -15,16 +15,16 @@ const UserAgent = [
 ]
 
 module.exports = {
-  PORT:3000,
+  PORT: 3000,
   CRAWL: {
     DELAY: 30,
     CONCURRENT: 1,
-    HEADER:{
+    HEADER: {
       'User-Agent': UserAgent[Math.floor(Math.random() * UserAgent.length + 1) - 1]
     }
   },
   DB: {
-    URL: 'localhost:27017/httpproxy'
+    URL: 'test:test12345@ds237955.mlab.com:37955/httpproxy'
   },
   PROXY: {
     // 代理更新间隔，单位小时
